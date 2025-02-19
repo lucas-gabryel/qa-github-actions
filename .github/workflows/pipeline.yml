@@ -17,15 +17,6 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Restaurar cache do Maven
-        id: cache-maven
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-${{ runner.os }}-
-
       - name: Baixar dependências do Maven
         run: mvn dependency:go-offline --batch-mode
 
