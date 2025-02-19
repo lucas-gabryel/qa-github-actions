@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-health-check
-          path: target/allure-results
+          path: qa-github-actions/allure-results
 
   contract:
     name: Contrato
@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-contrato
-          path: target/allure-results
+          path: qa-github-actions/allure-results
 
   funcional:
     name: Funcional
@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-funcional
-          path: target/allure-results
+          path: qa-github-actions/allure-results
 
   relatorio:
     name: Relatório
@@ -140,6 +140,24 @@ jobs:
           name: build-output
           path: .
 
+      - name: Baixar resultados dos testes de Health Check
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-health-check
+          path: qa-github-actions/allure-results
+
+      - name: Baixar resultados dos testes de Contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: qa-github-actions/allure-results
+
+      - name: Baixar resultados dos testes Funcionais
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: qa-github-actions/allure-results
+
       - name: Instalar Allure
         run: |
           sudo apt update
@@ -150,7 +168,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: target/allure-results
+          allure_results: qa-github-actions/allure-results
 
       - name: Publicar report
         uses: peaceiris/actions-gh-pages@v4
