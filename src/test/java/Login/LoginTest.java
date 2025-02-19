@@ -17,48 +17,38 @@ public class LoginTest {
     LoginRequest loginInvalido = LoginDataFactory.loginInvalido();
     LoginRequest emailInvalido = LoginDataFactory.emailInvalido();
 
-    @Test(groups = "Funcional")
+    @Test(groups = {"Funcional", "Contract"})
     public void testDeveFazerLoginComSucessoSchema() {
-
         loginClient.loginUsuarios(loginValido)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_LOGIN_COM_SUCESSO))
                 .body(LoginConstants.AUTHORIZATION, notNullValue())
-                .body(matchesJsonSchemaInClasspath("schemas/login_valido.json"))
-        ;
+                .body(matchesJsonSchemaInClasspath("schemas/login_valido.json"));
     }
 
-    @Test(groups = "Funcional")
+    @Test(groups = {"Health-Check", "Funcional"})
     public void testDeveFazerLoginComSucesso() {
-
         loginClient.loginUsuarios(loginValido)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_LOGIN_COM_SUCESSO))
-                .body(LoginConstants.AUTHORIZATION, notNullValue())
-        ;
+                .body(LoginConstants.AUTHORIZATION, notNullValue());
     }
 
     @Test(groups = "Funcional")
     public void testTentarFazerLoginComCredenciaisInvalidas() {
-
         loginClient.loginUsuarios(loginInvalido)
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_EMAIL_OU_SENHA_INVALIDOS))
-        ;
+                .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_EMAIL_OU_SENHA_INVALIDOS));
     }
 
-    @Test(groups = "Funcional")
+    @Test(groups = {"Funcional", "Contract"})
     public void testTentarFazerLoginComEmailInvalido() {
-
         loginClient.loginUsuarios(emailInvalido)
                 .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body(LoginConstants.EMAIL, equalTo(LoginConstants.MSG_EMAIL_INVALIDO))
-        ;
+                .body(LoginConstants.EMAIL, equalTo(LoginConstants.MSG_EMAIL_INVALIDO));
     }
-
-
 }

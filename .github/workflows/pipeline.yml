@@ -1,4 +1,4 @@
-name: pipeline
+name: Pipeline de Testes
 
 on: [push, pull_request]
 
@@ -11,60 +11,11 @@ permissions:
 
 jobs:
   build:
+    name: Build do Projeto
     runs-on: ubuntu-latest
-  health_check:
-    name: Health Check
-    runs-on: ubuntu-latest
-    needs: build
 
     steps:
-      - name: Verificar repositório
-        uses: actions/checkout@v3
-
-      - name: Rodar teste Health Check
-        run: mvn test -Dgroups=Health-Check
-
-  contract:
-    name: Contrato
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Verificar repositório
-        uses: actions/checkout@v3
-
-      - name: Rodar teste de Contrato
-        run: mvn test -Dgroups=Contract
-
-  funcional:
-    name: Funcional
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Verificar repositório
-        uses: actions/checkout@v3
-
-      - name: Rodar teste funcional
-        run: mvn test -Dgroups=Funcional
-
-  relatorio:
-    name: Relatorio
-    runs-on: ubuntu-latest
-    needs: [health_check, contract, funcional]
-
-    steps:
-      - name: Verificar repositório
-        uses: actions/checkout@v3
-
-      - name: Gerar relatório Allure
-        run: mvn allure:report
-
-      - name: Rodar Allure Serve
-        run: allure serve
-
-    steps:
-      - name: Checkout do código
+      - name: Checkout do Código
         uses: actions/checkout@v4
 
       - name: Configurar JDK 17
@@ -74,8 +25,59 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Baixar dependências do Maven
+      - name: Baixar Dependências do Maven
         run: mvn dependency:go-offline --batch-mode
 
-      - name: Build do projeto
+      - name: Compilar e Instalar Dependências
         run: mvn clean install --batch-mode
+
+  health_check:
+    name: Health Check da API
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Executar Teste de Health Check
+        run: mvn test -Dgroups=Health-Check
+
+  contract:
+    name: Testes de Contrato
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Executar Testes de Contrato
+        run: mvn test -Dgroups=Contract
+
+  funcional:
+    name: Testes Funcionais
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Executar Testes Funcionais
+        run: mvn test -Dgroups=Funcional
+
+  relatorio:
+    name: Geração de Relatórios
+    runs-on: ubuntu-latest
+    needs: [health_check, contract, funcional]
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Gerar Relatório Allure
+        run: mvn allure:report
+
+      - name: Servir Relatório Allure
+        run: allure serve
