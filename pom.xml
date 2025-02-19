@@ -52,14 +52,12 @@
             <artifactId>allure-bom</artifactId>
             <version>${allure.version}</version>
             <type>pom</type>
-            <scope>import</scope>
         </dependency>
 
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
