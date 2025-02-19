@@ -4,9 +4,10 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    - name: Build
+      runs-on: ubuntu-latest
 
-    steps:
+      steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
@@ -22,3 +23,12 @@ jobs:
 
       - name: Build do projeto
         run: mvn clean install --batch-mode
+
+  healthcheck:
+    - name: Health Check
+      needs: build
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Run application
+        run: mvn test -Dgroups=Functional
