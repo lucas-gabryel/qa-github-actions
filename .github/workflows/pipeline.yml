@@ -10,14 +10,17 @@ on:
       - main
       - develop
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+  security-advisories: read
+  pull-requests: read
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
 
     strategy:
       fail-fast: true
@@ -28,15 +31,21 @@ jobs:
       - name: Verificar repositório
         uses: actions/checkout@v3
 
-      - name: Initializar CodeQL
+      - name: Configurar ambiente Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Inicializar CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
-      - name: Buidar aplicação
-        uses: github/codeql-action/autobuild@v3
+      - name: Compilar aplicação manualmente
+        run: mvn clean install -DskipTests
 
-      - name: Análises de performance codeQL
+      - name: Análises de performance CodeQL
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
@@ -44,15 +53,7 @@ jobs:
   health_check:
     name: Health Check
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: true
-      matrix:
-        language: [ 'java' ]
+    needs: build
 
     steps:
       - name: Verificar repositório
@@ -61,18 +62,10 @@ jobs:
       - name: Rodar teste Health Check
         run: mvn test -Dgroups=Health-Check
 
-  Contract:
+  contract:
     name: Contrato
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: true
-      matrix:
-        language: [ 'java' ]
+    needs: build
 
     steps:
       - name: Verificar repositório
@@ -81,18 +74,10 @@ jobs:
       - name: Rodar teste de Contrato
         run: mvn test -Dgroups=Contract
 
-  Funcional:
+  funcional:
     name: Funcional
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: true
-      matrix:
-        language: [ 'java' ]
+    needs: build
 
     steps:
       - name: Verificar repositório
@@ -101,20 +86,17 @@ jobs:
       - name: Rodar teste funcional
         run: mvn test -Dgroups=Funcional
 
-  Relatorio:
-    name: Relátorio
+  relatorio:
+    name: Relatorio
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: true
-      matrix:
-        language: [ 'java' ]
+    needs: [health_check, contract, funcional]
 
     steps:
-      - name: Rodar relátorio do allure serve
-        run: allure serve
+      - name: Verificar repositório
+        uses: actions/checkout@v3
 
+      - name: Gerar relatório Allure
+        run: mvn allure:report
+
+      - name: Rodar Allure Serve
+        run: allure serve
