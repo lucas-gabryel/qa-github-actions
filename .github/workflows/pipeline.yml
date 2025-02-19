@@ -1,21 +1,14 @@
-name: Pipeline de Testes
+name: pipeline
 
 on: [push, pull_request]
 
-permissions:
-  actions: read
-  contents: read
-  security-events: write
-  security-advisories: read
-  pull-requests: read
-
 jobs:
   build:
-    name: Build do Projeto
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do Código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Configurar JDK 17
@@ -25,59 +18,119 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Baixar Dependências do Maven
+      - name: Baixar dependências do Maven
         run: mvn dependency:go-offline --batch-mode
 
-      - name: Compilar e Instalar Dependências
+      - name: Build do projeto
         run: mvn clean install --batch-mode
 
-  health_check:
-    name: Health Check da API
-    runs-on: ubuntu-latest
+      - name: Armazenar arquivos de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+  healthcheck:
+    name: Health Check
     needs: build
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do Código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Executar Teste de Health Check
-        run: mvn test -Dgroups=Health-Check
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Executar teste de Health Check
+        run: mvn test -Dgroups=Functional
 
   contract:
-    name: Testes de Contrato
+    name: Contrato
+    needs: healthcheck
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
-      - name: Checkout do Código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Executar Testes de Contrato
-        run: mvn test -Dgroups=Contract
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Executar teste de Contrato
+        run: mvn test -Dgroups=Functional
 
   funcional:
-    name: Testes Funcionais
+    name: Funcional
+    needs: contract
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
-      - name: Checkout do Código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Executar Testes Funcionais
-        run: mvn test -Dgroups=Funcional
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Executar testes Funcionais
+        run: mvn test -Dgroups=Functional
 
   relatorio:
-    name: Geração de Relatórios
+    name: Funcional
+    needs: contract
     runs-on: ubuntu-latest
-    needs: [health_check, contract, funcional]
 
     steps:
-      - name: Checkout do Código
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Gerar Relatório Allure
-        run: mvn allure:report
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
 
-      - name: Servir Relatório Allure
-        run: allure serve
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Instalar Allure
+        run: |
+          sudo apt update
+          sudo apt install -y allure
+
+      - name: Gerar Allure Report
+        run: mvn allure:report
