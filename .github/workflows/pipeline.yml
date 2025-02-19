@@ -6,7 +6,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -34,7 +33,6 @@ jobs:
     name: Health Check
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -55,11 +53,16 @@ jobs:
       - name: Executar teste de Health Check
         run: mvn test -Dgroups=Functional
 
+      - name: Salvar resultados de teste de Health Check
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-health-check
+          path: target/allure-results
+
   contract:
     name: Contrato
     needs: healthcheck
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -80,11 +83,16 @@ jobs:
       - name: Executar teste de Contrato
         run: mvn test -Dgroups=Functional
 
+      - name: Salvar resultados de teste de Contrato
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
+
   funcional:
     name: Funcional
     needs: contract
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -105,11 +113,16 @@ jobs:
       - name: Executar testes Funcionais
         run: mvn test -Dgroups=Functional
 
+      - name: Salvar resultados de teste Funcional
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: target/allure-results
+
   relatorio:
     name: Relatório
     needs: funcional
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -145,17 +158,13 @@ jobs:
           name: allure-results-funcional
           path: target/allure-results
 
-      - name: Carregar histórico de report
-        uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+      - name: Instalar Allure
+        run: |
+          sudo apt update
+          sudo apt install -y allure
 
       - name: Construir report de teste
         uses: simple-elf/allure-report-action@v1.7
-        if: always()
         with:
           gh_pages: gh-pages
           allure_history: allure-history
@@ -163,10 +172,7 @@ jobs:
 
       - name: Publicar report
         uses: peaceiris/actions-gh-pages@v4
-        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-
-
