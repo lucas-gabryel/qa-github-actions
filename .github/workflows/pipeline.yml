@@ -106,10 +106,11 @@ jobs:
         run: mvn test -Dgroups=Functional
 
   relatorio:
+    name: Relatório
+    needs: funcional
     runs-on: ubuntu-latest
+
     steps:
-      - name: Aguardar testes
-        run: sleep 120
       - name: Checkout do código
         uses: actions/checkout@v4
 
@@ -120,27 +121,25 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Cache Maven
-        id: cache
-        uses: actions/cache@v4
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
+          name: build-output
+          path: .
 
-      - name: Baixar resultados dos testes
+      - name: Baixar resultados dos testes de Health Check
         uses: actions/download-artifact@v4
         with:
           name: allure-results-health-check
           path: target/allure-results
 
-      - name: Baixar resultados dos testes de contrato
+      - name: Baixar resultados dos testes de Contrato
         uses: actions/download-artifact@v4
         with:
           name: allure-results-contrato
           path: target/allure-results
 
-      - name: Baixar resultados dos testes funcionais
+      - name: Baixar resultados dos testes Funcionais
         uses: actions/download-artifact@v4
         with:
           name: allure-results-funcional
@@ -160,7 +159,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: qa-github-actions/allure-results
+          allure_results: target/allure-results
 
       - name: Publicar report
         uses: peaceiris/actions-gh-pages@v4
@@ -169,4 +168,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+
 
