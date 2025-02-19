@@ -51,7 +51,7 @@ jobs:
           path: .
 
       - name: Executar teste de Health Check
-        run: mvn test -Dgroups=Functional
+        run: mvn test -Dgroups=HealthCheck
 
       - name: Salvar resultados de teste de Health Check
         uses: actions/upload-artifact@v4
@@ -121,7 +121,8 @@ jobs:
 
   relatorio:
     name: Relatório
-    needs: funcional
+    needs: [build, healthcheck, contract, funcional]
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código

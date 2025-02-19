@@ -27,7 +27,7 @@ public class LoginTest {
                 .body(matchesJsonSchemaInClasspath("schemas/login_valido.json"));
     }
 
-    @Test(groups = {"Health-Check", "Functional"})
+    @Test(groups = {"HealthCheck", "Functional"})
     public void testDeveFazerLoginComSucesso() {
         loginClient.loginUsuarios(loginValido)
                 .then()
