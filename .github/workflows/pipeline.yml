@@ -106,8 +106,8 @@ jobs:
         run: mvn test -Dgroups=Functional
 
   relatorio:
-    name: Funcional
-    needs: contract
+    name: Relatório
+    needs: funcional
     runs-on: ubuntu-latest
 
     steps:
