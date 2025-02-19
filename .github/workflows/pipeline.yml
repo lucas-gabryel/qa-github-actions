@@ -140,24 +140,6 @@ jobs:
           name: build-output
           path: .
 
-      - name: Baixar resultados dos testes de Health Check
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results-health-check
-          path: target/allure-results
-
-      - name: Baixar resultados dos testes de Contrato
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results-contrato
-          path: target/allure-results
-
-      - name: Baixar resultados dos testes Funcionais
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results-funcional
-          path: target/allure-results
-
       - name: Instalar Allure
         run: |
           sudo apt update
