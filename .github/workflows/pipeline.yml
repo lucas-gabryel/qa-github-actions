@@ -1,1 +1,120 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Initializar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Buidar aplicação
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Análises de performance codeQL
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  health_check:
+    name: Health Check
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste Health Check
+        run: mvn test -Dgroups=Health-Check
+
+  Contract:
+    name: Contrato
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste de Contrato
+        run: mvn test -Dgroups=Contract
+
+  Funcional:
+    name: Funcional
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste funcional
+        run: mvn test -Dgroups=Funcional
+
+  Relatorio:
+    name: Relátorio
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: [ 'java' ]
+
+    steps:
+      - name: Rodar relátorio do allure serve
+        run: allure serve allure-results
 
