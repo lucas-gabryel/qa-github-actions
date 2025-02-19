@@ -2,9 +2,66 @@ name: pipeline
 
 on: [push, pull_request]
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+  security-advisories: read
+  pull-requests: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+  health_check:
+    name: Health Check
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste Health Check
+        run: mvn test -Dgroups=Health-Check
+
+  contract:
+    name: Contrato
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste de Contrato
+        run: mvn test -Dgroups=Contract
+
+  funcional:
+    name: Funcional
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Rodar teste funcional
+        run: mvn test -Dgroups=Funcional
+
+  relatorio:
+    name: Relatorio
+    runs-on: ubuntu-latest
+    needs: [health_check, contract, funcional]
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Gerar relatório Allure
+        run: mvn allure:report
+
+      - name: Rodar Allure Serve
+        run: allure serve
 
     steps:
       - name: Checkout do código
