@@ -144,19 +144,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results-health-check
-          path: qa-github-actions/allure-results
+          path: target/allure-results
 
       - name: Baixar resultados dos testes de Contrato
         uses: actions/download-artifact@v4
         with:
           name: allure-results-contrato
-          path: qa-github-actions/allure-results
+          path: target/allure-results
 
       - name: Baixar resultados dos testes Funcionais
         uses: actions/download-artifact@v4
         with:
           name: allure-results-funcional
-          path: qa-github-actions/allure-results
+          path: target/allure-results
 
       - name: Instalar Allure
         run: |
@@ -168,7 +168,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: qa-github-actions/allure-results
+          allure_results: target/allure-results
 
       - name: Publicar report
         uses: peaceiris/actions-gh-pages@v4
