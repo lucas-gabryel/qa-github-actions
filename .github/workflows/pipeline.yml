@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-health-check
-          path: qa-github-actions/allure-results
+          path: ./allure-results
 
   contract:
     name: Contrato
@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-contrato
-          path: qa-github-actions/allure-results
+          path: ./allure-results
 
   funcional:
     name: Funcional
@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-funcional
-          path: qa-github-actions/allure-results
+          path: ./allure-results
 
   relatorio:
     name: Relatório
