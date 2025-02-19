@@ -28,7 +28,7 @@ jobs:
         language: [ 'java' ]
 
     steps:
-      - name: Verificar repositório
+      - name: Verificar repositorio
         uses: actions/checkout@v3
 
       - name: Configurar ambiente Java
@@ -42,10 +42,10 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Compilar aplicação manualmente
+      - name: Compilar aplicacao manualmente
         run: mvn clean install -DskipTests
 
-      - name: Análises de performance CodeQL
+      - name: Analises de performance CodeQL
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
@@ -56,7 +56,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Verificar repositório
+      - name: Verificar repositorio
         uses: actions/checkout@v3
 
       - name: Rodar teste Health Check
@@ -68,7 +68,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Verificar repositório
+      - name: Verificar repositorio
         uses: actions/checkout@v3
 
       - name: Rodar teste de Contrato
@@ -80,7 +80,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Verificar repositório
+      - name: Verificar repositorio
         uses: actions/checkout@v3
 
       - name: Rodar teste funcional
@@ -92,10 +92,10 @@ jobs:
     needs: [health_check, contract, funcional]
 
     steps:
-      - name: Verificar repositório
+      - name: Verificar repositorio
         uses: actions/checkout@v3
 
-      - name: Gerar relatório Allure
+      - name: Gerar relatorio Allure
         run: mvn allure:report
 
       - name: Rodar Allure Serve
