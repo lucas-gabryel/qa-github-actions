@@ -40,3 +40,9 @@ build/
 
 ### GitHub ###
 .github/
+
+## Dados sensíveis ##
+dados.properties
+
+## Allure ##
+allure-results
