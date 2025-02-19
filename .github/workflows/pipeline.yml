@@ -24,11 +24,10 @@ jobs:
       - name: Build do projeto
         run: mvn clean install --batch-mode
 
-  jobs:
-    healthcheck:
-      needs: build
-      runs-on: ubuntu-latest
+  healthcheck:
+    needs: build
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Run application
-          run: mvn test -Dgroups=Functional
+    steps:
+      - name: Run application
+        run: mvn test -Dgroups=Functional
