@@ -17,7 +17,7 @@ public class LoginTest {
     LoginRequest loginInvalido = LoginDataFactory.loginInvalido();
     LoginRequest emailInvalido = LoginDataFactory.emailInvalido();
 
-    @Test(groups = {"Funcional", "Contract"})
+    @Test(groups = {"Functional", "Contract"})
     public void testDeveFazerLoginComSucessoSchema() {
         loginClient.loginUsuarios(loginValido)
                 .then()
@@ -27,7 +27,7 @@ public class LoginTest {
                 .body(matchesJsonSchemaInClasspath("schemas/login_valido.json"));
     }
 
-    @Test(groups = {"Health-Check", "Funcional"})
+    @Test(groups = {"Health-Check", "Functional"})
     public void testDeveFazerLoginComSucesso() {
         loginClient.loginUsuarios(loginValido)
                 .then()
@@ -36,7 +36,7 @@ public class LoginTest {
                 .body(LoginConstants.AUTHORIZATION, notNullValue());
     }
 
-    @Test(groups = "Funcional")
+    @Test(groups = "Functional")
     public void testTentarFazerLoginComCredenciaisInvalidas() {
         loginClient.loginUsuarios(loginInvalido)
                 .then()
@@ -44,7 +44,7 @@ public class LoginTest {
                 .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_EMAIL_OU_SENHA_INVALIDOS));
     }
 
-    @Test(groups = {"Funcional", "Contract"})
+    @Test(groups = {"Functional", "Contract"})
     public void testTentarFazerLoginComEmailInvalido() {
         loginClient.loginUsuarios(emailInvalido)
                 .then()
