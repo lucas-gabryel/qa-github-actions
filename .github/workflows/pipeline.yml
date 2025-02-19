@@ -116,5 +116,5 @@ jobs:
 
     steps:
       - name: Rodar relátorio do allure serve
-        run: allure serve allure-results
+        run: allure serve
 
