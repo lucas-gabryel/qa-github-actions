@@ -24,10 +24,32 @@ jobs:
       - name: Build do projeto
         run: mvn clean install --batch-mode
 
+      - name: Armazenar arquivos de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: .
+
   healthcheck:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run application
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: maven
+
+      - name: Restaurar arquivos de build
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: .
+
+      - name: Executar testes funcionais
         run: mvn test -Dgroups=Functional
