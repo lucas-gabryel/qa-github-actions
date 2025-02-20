@@ -21,7 +21,7 @@ jobs:
         run: mvn dependency:go-offline --batch-mode
 
       - name: Build do projeto
-        run: mvn clean install --batch-mode
+        run: mvn clean package --batch-mode
 
       - name: Armazenar arquivos de build
         uses: actions/upload-artifact@v4
