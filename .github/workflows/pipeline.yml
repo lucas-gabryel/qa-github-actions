@@ -21,7 +21,7 @@ jobs:
         run: mvn dependency:go-offline --batch-mode
 
       - name: Build do projeto
-        run: mvn clean install --batch-mode
+        run: mvn clean compile --batch-mode
 
       - name: Armazenar arquivos de build
         uses: actions/upload-artifact@v4
@@ -54,6 +54,7 @@ jobs:
         run: mvn test -Dgroups=HealthCheck
 
       - name: Salvar resultados de teste de Health Check
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-health-check
@@ -81,9 +82,10 @@ jobs:
           path: .
 
       - name: Executar teste de Contrato
-        run: mvn test -Dgroups=Functional
+        run: mvn test -Dgroups=Contract
 
       - name: Salvar resultados de teste de Contrato
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-contrato
@@ -114,6 +116,7 @@ jobs:
         run: mvn test -Dgroups=Functional
 
       - name: Salvar resultados de teste Funcional
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-funcional
@@ -122,6 +125,7 @@ jobs:
   relatorio:
     name: Relatório
     needs: [build, healthcheck, contract, funcional]
+    if: always()
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -143,18 +147,24 @@ jobs:
 
       - name: Baixar resultados dos testes de Health Check
         uses: actions/download-artifact@v4
+        if: success() || failure()
+        continue-on-error: true
         with:
           name: allure-results-health-check
           path: target/allure-results
 
       - name: Baixar resultados dos testes de Contrato
         uses: actions/download-artifact@v4
+        if: success() || failure()
+        continue-on-error: true
         with:
           name: allure-results-contrato
           path: target/allure-results
 
       - name: Baixar resultados dos testes Funcionais
         uses: actions/download-artifact@v4
+        if: success() || failure()
+        continue-on-error: true
         with:
           name: allure-results-funcional
           path: target/allure-results
