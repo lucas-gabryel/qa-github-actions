@@ -127,6 +127,17 @@ Os commits devem ser descritivos e seguir a estrutura:
 ```
 [Tipo]: Descrição breve
 ```
+## Resultados Obtidos
+
+- `A implementação desta pipeline trouxe os seguintes benefícios:`
+  - `Detecção Rápida de Falhas:` Erros são identificados assim que ocorrem.
+  - `Execução Contínua:` Testes são executados automaticamente a cada alteração no repositório.
+  - `Transparência no Desenvolvimento:` Relatórios detalhados facilitam a análise dos resultados.
+  - `Facilidade de Manutenção:` Integração automatizada com GitHub Actions e Discord.
+
+## Conclusão
+
+A pipeline de testes automatizados no GitHub Actions aumentou a confiabilidade do sistema de e-commerce, reduzindo erros e facilitando a entrega contínua com qualidade. O uso do Allure Report e a notificação via Discord garantem visibilidade e agilidade na resolução de problemas, promovendo a melhoria contínua do software.
 
 ## Equipe 13
 
