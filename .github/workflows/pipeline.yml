@@ -54,6 +54,7 @@ jobs:
         run: mvn test -Dgroups=HealthCheck
 
       - name: Salvar resultados de teste de Health Check
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-health-check
@@ -84,6 +85,7 @@ jobs:
         run: mvn test -Dgroups=Contract
 
       - name: Salvar resultados de teste de Contrato
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-contrato
@@ -114,6 +116,7 @@ jobs:
         run: mvn test -Dgroups=Functional
 
       - name: Salvar resultados de teste Funcional
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-funcional
