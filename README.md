@@ -19,14 +19,88 @@ Este repositório contém testes automatizados de API para o sistema [ServeRest]
 
 ```
 qa-github-actions/
-│-- tests/                 # Diretório contendo os testes automatizados
-│   ├──  
-│   ├── 
-│   ├── 
-│-- .github/workflows/      # Diretório de workflows do GitHub Actions
-│   ├── test-pipeline.yml   # Arquivo de configuração da pipeline
-│-- package.json           # Dependências do projeto
-│-- README.md              # Documentação do repositório
+
+├── .github/
+
+│   └── workflows/
+
+│       ├── codeql.yml
+
+│       └── pipeline.yml
+
+├── allure-results/
+
+├── src/
+
+│   └── main/
+
+│       └── java/
+
+│           └── client/
+
+│               ├── BaseClient.java
+
+│               ├── LoginClient.java
+
+│               └── UsuarioClient.java
+
+│           └── data/factory/
+
+│               ├── LoginDataFactory.java
+
+│               └── UsuarioDataFactory.java
+
+│           └── model/
+
+│               └── usuario/
+
+│                   ├── UsuarioRequest.java
+
+│                   └── UsuarioResponse.java
+
+│                   └── LoginRequest.java
+
+│           └── utils/
+
+│               └── constants/
+
+│                   ├── LoginConstants.java
+
+│                   └── UsuarioConstants.java
+
+│           └── Credenciais.java 
+
+├── resources/
+
+│   └── dados.properties
+
+├── src/
+
+│   └── test/
+
+│       └── java/
+
+│           └── Login/
+
+│               └── LoginTest.java
+
+│           └── usuarios/
+
+│               └── CadastrarUsuariosTest.java
+
+│       └── resources/
+
+│           └── schemas/
+
+│               ├── cadastro_usuario.json
+
+│               └── login_valido.json
+
+├── .gitignore
+
+├── pom.xml
+
+└── README.md
 ```
 
 ## Configuração e Execução
