@@ -40,3 +40,6 @@ build/
 
 ### GitHub ###
 .github/
+
+## Dados sensíveis ##
+dados.properties
