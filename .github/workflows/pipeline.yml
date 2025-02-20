@@ -190,3 +190,22 @@ jobs:
           github_token: ${{ secrets.GH_PAT }}
           publish_branch: gh-pages
           publish_dir: allure-history
+
+      - name: Esperar atualizar no GitHub Pages
+        run: sleep 30
+
+      - name: Enviar mensagem no Discord com dados do Allure
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO_NAME: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          STATUS: ${{ job.status }}
+
+        run: |
+          REPORT_URL="https://lucas-gabryel.github.io/qa-github-actions/"
+          MESSAGE="🚀 **Testes finalizados!**\n🔹 **Status:** $STATUS\n🔹 **Branch:** $BRANCH\n🔹 **Relatório:** [Clique aqui]($REPORT_URL)"
+          
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"username\": \"GitHub Actions\", \"content\": \"$MESSAGE\"}" \
+               $DISCORD_WEBHOOK
