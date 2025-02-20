@@ -38,8 +38,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### GitHub ###
-.github/
-
 ## Dados sensíveis ##
 dados.properties
