@@ -81,7 +81,7 @@ jobs:
           path: .
 
       - name: Executar teste de Contrato
-        run: mvn test -Dgroups=Functional
+        run: mvn test -Dgroups=Contract
 
       - name: Salvar resultados de teste de Contrato
         uses: actions/upload-artifact@v4
@@ -122,6 +122,7 @@ jobs:
   relatorio:
     name: Relatório
     needs: [build, healthcheck, contract, funcional]
+    if: always()
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
