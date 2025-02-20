@@ -4,6 +4,8 @@
 
 Este repositório contém testes automatizados de API para o sistema [ServeRest](https://serverest.dev/#/). O objetivo é validar a funcionalidade de endpoints relevantes e garantir a qualidade do sistema através da integração com o GitHub Actions.
 
+
+
 ## Funcionalidades
 
 - Implementação de testes automatizados para os endpoints do ServeRest
@@ -105,6 +107,15 @@ qa-github-actions/
 
 ## Configuração e Execução
 
+### Ferramentas
+- GitHub Actions
+- Allure Report
+- Rest Assured
+- IntelliJ
+- Codeql
+- Maven
+- Discord (WebHook)
+
 ### Pré-requisitos
 
 - Java 17
@@ -129,11 +140,20 @@ Os commits devem ser descritivos e seguir a estrutura:
 ```
 ## Resultados Obtidos
 
-- `A implementação desta pipeline trouxe os seguintes benefícios:`
-  - `Detecção Rápida de Falhas:` Erros são identificados assim que ocorrem.
-  - `Execução Contínua:` Testes são executados automaticamente a cada alteração no repositório.
-  - `Transparência no Desenvolvimento:` Relatórios detalhados facilitam a análise dos resultados.
-  - `Facilidade de Manutenção:` Integração automatizada com GitHub Actions e Discord.
+A implementação desta pipeline trouxe os seguintes benefícios:
+  - Detecção Rápida de Falhas: Erros são identificados assim que ocorrem.
+  - Execução Contínua: Testes são executados automaticamente a cada alteração no repositório.
+  - Transparência no Desenvolvimento: Relatórios detalhados facilitam a análise dos resultados.
+  - Facilidade de Manutenção: Integração automatizada com GitHub Actions e Discord.
+
+- Pipeline
+  ![Pipeline](./docs/img/pipe.png)
+
+- Resultados do Allure
+  ![Allure](./docs/img/allure.png)
+
+- Mensagem no Discord
+  ![Discord](./docs/img/discord.png)
 
 ## Conclusão
 
