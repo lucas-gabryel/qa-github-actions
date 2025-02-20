@@ -193,11 +193,12 @@ jobs:
           REPO_NAME: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
           STATUS: ${{ job.status }}
-          run: |
-            REPORT_URL="https://lucas-gabryel.github.io/qa-github-actions/"
-            MESSAGE="🚀 **Testes finalizados!**\n🔹 **Status:** $STATUS\n🔹 **Branch:** $BRANCH\n🔹 **Relatório:** [Clique aqui]($REPORT_URL)"
-            
-            curl -H "Content-Type: application/json" \
-                 -X POST \
-                 -d "{\"username\": \"GitHub Actions\", \"content\": \"$MESSAGE\"}" \
-                 $DISCORD_WEBHOOK
+
+        run: |
+          REPORT_URL="https://lucas-gabryel.github.io/qa-github-actions/"
+          MESSAGE="🚀 **Testes finalizados!**\n🔹 **Status:** $STATUS\n🔹 **Branch:** $BRANCH\n🔹 **Relatório:** [Clique aqui]($REPORT_URL)"
+          
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"username\": \"GitHub Actions\", \"content\": \"$MESSAGE\"}" \
+               $DISCORD_WEBHOOK
