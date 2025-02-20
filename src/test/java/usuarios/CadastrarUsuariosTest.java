@@ -19,6 +19,7 @@ public class CadastrarUsuariosTest {
     UsuarioRequest usuarioResquest = UsuarioDataFactory.usuarioValido();
     UsuarioRequest usuario = UsuarioDataFactory.usuarioValido();
     UsuarioRequest usuarioEmail = UsuarioDataFactory.usuarioComEmailExistente();
+    UsuarioRequest usuarioFalho = UsuarioDataFactory.usuarioValido();
 
     @Test(groups = "Contract")
     @Severity(SeverityLevel.CRITICAL)
@@ -67,7 +68,7 @@ public class CadastrarUsuariosTest {
     @Story("Teste falho proposital de cadatrar usuario")
     @Description("Este teste falha propositalmente")
     public void testFalhaProposital() {
-        usuariosClient.cadastrarUsuarios(usuario)
+        usuariosClient.cadastrarUsuarios(usuarioFalho)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
