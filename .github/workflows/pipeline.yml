@@ -51,13 +51,13 @@ jobs:
           path: .
 
       - name: Executar teste de Health Check
-        run: mvn test -Dgroups=Functional
+        run: mvn test -Dgroups=HealthCheck
 
       - name: Salvar resultados de teste de Health Check
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-health-check
-          path: target/allure-results
+          path: ./allure-results
 
   contract:
     name: Contrato
@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-contrato
-          path: target/allure-results
+          path: ./allure-results
 
   funcional:
     name: Funcional
@@ -117,11 +117,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-funcional
-          path: target/allure-results
+          path: ./allure-results
 
   relatorio:
     name: Relatório
-    needs: funcional
+    needs: [build, healthcheck, contract, funcional]
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -140,10 +141,34 @@ jobs:
           name: build-output
           path: .
 
+      - name: Baixar resultados dos testes de Health Check
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-health-check
+          path: target/allure-results
+
+      - name: Baixar resultados dos testes de Contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
+
+      - name: Baixar resultados dos testes Funcionais
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: target/allure-results
+
       - name: Instalar Allure
         run: |
           sudo apt update
           sudo apt install -y allure
+
+      - name: Carregar histórico de report
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
 
       - name: Construir report de teste
         uses: simple-elf/allure-report-action@v1.7
