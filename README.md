@@ -1,4 +1,4 @@
-# qa-github-actions
+# Pipeline de CI/CD
 
 ## Descrição
 
