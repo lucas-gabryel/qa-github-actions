@@ -4,9 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -34,7 +32,6 @@ jobs:
     name: Health Check
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -53,13 +50,18 @@ jobs:
           path: .
 
       - name: Executar teste de Health Check
-        run: mvn test -Dgroups=Functional
+        run: mvn test -Dgroups=HealthCheck
+
+      - name: Salvar resultados de teste de Health Check
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-health-check
+          path: ./allure-results
 
   contract:
     name: Contrato
     needs: healthcheck
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -80,11 +82,16 @@ jobs:
       - name: Executar teste de Contrato
         run: mvn test -Dgroups=Functional
 
+      - name: Salvar resultados de teste de Contrato
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: ./allure-results
+
   funcional:
     name: Funcional
     needs: contract
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -105,11 +112,17 @@ jobs:
       - name: Executar testes Funcionais
         run: mvn test -Dgroups=Functional
 
+      - name: Salvar resultados de teste Funcional
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: ./allure-results
+
   relatorio:
     name: Relatório
-    needs: funcional
+    needs: [build, healthcheck, contract, funcional]
+    continue-on-error: true
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -127,10 +140,45 @@ jobs:
           name: build-output
           path: .
 
+      - name: Baixar resultados dos testes de Health Check
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-health-check
+          path: target/allure-results
+
+      - name: Baixar resultados dos testes de Contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
+
+      - name: Baixar resultados dos testes Funcionais
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: target/allure-results
+
       - name: Instalar Allure
         run: |
           sudo apt update
           sudo apt install -y allure
 
-      - name: Gerar Allure Report
-        run: mvn allure:report
+      - name: Carregar histórico de report
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Construir report de teste
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: target/allure-results
+
+      - name: Publicar report
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
