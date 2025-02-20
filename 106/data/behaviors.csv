@@ -1,0 +1,6 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","","","0","0","4","0","0"
+"","Cadastro de Usuários","Teste falho proposital de cadatrar usuario","1","0","0","0","0"
+"","Cadastro de Usuários","Cadastrar um usuário com sucesso","0","0","1","0","0"
+"","Cadastro de Usuários","Tentar cadastrar um usuário com email já cadastrado","0","0","1","0","0"
+"","Cadastro de Usuários","Cadastrar um usuário com sucesso e validar contrato","0","0","1","0","0"
