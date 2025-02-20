@@ -48,7 +48,7 @@ public class CadastrarUsuariosTest {
                 .body(UsuarioConstants.ID, notNullValue());
     }
 
-    @Test
+    @Test(groups = "HealthCheck")
     @Severity(SeverityLevel.NORMAL)
     @Story("Tentar cadastrar um usuário com email já cadastrado")
     @Description("Testa se o sistema impede o cadastro de um usuário com email já existente")
@@ -61,7 +61,7 @@ public class CadastrarUsuariosTest {
                 .body(UsuarioConstants.MESSAGE, equalTo(UsuarioConstants.MSG_EMAIL_JA_CADASTRADO));
     }
 
-    @Test
+    @Test(groups = "Functional")
     @Severity(SeverityLevel.MINOR)
     @Story("Teste falho proposital de cadatrar usuario")
     @Description("Este teste falha propositalmente")
