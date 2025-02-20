@@ -163,3 +163,6 @@ A pipeline de testes automatizados no GitHub Actions aumentou a confiabilidade d
 
 - [Yasmin Muniz](https://github.com/Yasmiinmuniz)
 - [Lucas Gabryel](https://github.com/lucas-gabryel)
+
+## Documentação
+ `https://docs.google.com/document/d/1Eg-uJOvaqX9t5HfTerr0ahPUk8fyw32z/edit?usp=sharing&ouid=105417740856134121538&rtpof=true&sd=true`
