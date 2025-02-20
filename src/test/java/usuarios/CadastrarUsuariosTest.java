@@ -63,15 +63,15 @@ public class CadastrarUsuariosTest {
                 .body(UsuarioConstants.MESSAGE, equalTo(UsuarioConstants.MSG_EMAIL_JA_CADASTRADO));
     }
 
-    @Test(groups = "Functional")
-    @Severity(SeverityLevel.MINOR)
-    @Story("Teste falho proposital de cadatrar usuario")
-    @Description("Este teste falha propositalmente")
-    public void testFalhaProposital() {
-        usuariosClient.cadastrarUsuarios(usuarioFalho)
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
-                .body(UsuarioConstants.MESSAGE, equalTo("Mensagem inexistente"));
-    }
+//    @Test(groups = "Functional")
+//    @Severity(SeverityLevel.MINOR)
+//    @Story("Teste falho proposital de cadatrar usuario")
+//    @Description("Este teste falha propositalmente")
+//    public void testFalhaProposital() {
+//        usuariosClient.cadastrarUsuarios(usuarioFalho)
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+//                .body(UsuarioConstants.MESSAGE, equalTo("Mensagem inexistente"));
+//    }
 }
