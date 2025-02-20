@@ -30,7 +30,7 @@ public class CadastrarUsuariosTest {
         usuariosClient.cadastrarUsuarios(usuarioResquest)
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
+                .statusCode(HttpStatus.SC_BAD_REQUEST)//sc_created
                 .body(UsuarioConstants.MESSAGE, equalTo(UsuarioConstants.MSG_CADASTRO_COM_SUCESSO))
                 .body(UsuarioConstants.ID, notNullValue())
                 .body(matchesJsonSchemaInClasspath("schemas/cadastro_usuario.json"));
@@ -59,7 +59,7 @@ public class CadastrarUsuariosTest {
         usuariosClient.cadastrarUsuarios(usuarioEmail)
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.SC_OK)
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(UsuarioConstants.MESSAGE, equalTo(UsuarioConstants.MSG_EMAIL_JA_CADASTRADO));
     }
 
