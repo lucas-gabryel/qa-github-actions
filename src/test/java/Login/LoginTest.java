@@ -2,6 +2,10 @@ package Login;
 
 import client.LoginClient;
 import data.factory.LoginDataFactory;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import model.LoginRequest;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
@@ -17,7 +21,10 @@ public class LoginTest {
     LoginRequest loginInvalido = LoginDataFactory.loginInvalido();
     LoginRequest emailInvalido = LoginDataFactory.emailInvalido();
 
-    @Test(groups = {"Functional", "Contract"})
+    @Test(groups = "Contract")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login com sucesso")
+    @Description("Testa se o usuario faz login com sucesso")
     public void testDeveFazerLoginComSucessoSchema() {
         loginClient.loginUsuarios(loginValido)
                 .then()
@@ -27,7 +34,10 @@ public class LoginTest {
                 .body(matchesJsonSchemaInClasspath("schemas/login_valido.json"));
     }
 
-    @Test(groups = {"HealthCheck", "Functional"})
+    @Test(groups = "HealthCheck")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login com sucesso")
+    @Description("Testa se o usuario faz login com sucesso")
     public void testDeveFazerLoginComSucesso() {
         loginClient.loginUsuarios(loginValido)
                 .then()
@@ -37,6 +47,9 @@ public class LoginTest {
     }
 
     @Test(groups = "Functional")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login")
+    @Description("Testa se o usuario pode fazer login com credenciais invalidas")
     public void testTentarFazerLoginComCredenciaisInvalidas() {
         loginClient.loginUsuarios(loginInvalido)
                 .then()
@@ -44,7 +57,10 @@ public class LoginTest {
                 .body(LoginConstants.MESSAGE, equalTo(LoginConstants.MSG_EMAIL_OU_SENHA_INVALIDOS));
     }
 
-    @Test(groups = {"Functional", "Contract"})
+    @Test(groups = "Functional")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Login")
+    @Description("Testa se o usuario pode fazer login com email invalido")
     public void testTentarFazerLoginComEmailInvalido() {
         loginClient.loginUsuarios(emailInvalido)
                 .then()
