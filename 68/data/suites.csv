@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Feb 20 12:51:06 GMT 2025","Thu Feb 20 12:51:06 GMT 2025","108","Surefire suite","Surefire test","Login.LoginTest","Login.LoginTest","testTentarFazerLoginComEmailInvalido","testTentarFazerLoginComEmailInvalido",""
+"passed","Thu Feb 20 12:51:06 GMT 2025","Thu Feb 20 12:51:06 GMT 2025","272","Surefire suite","Surefire test","Login.LoginTest","Login.LoginTest","testDeveFazerLoginComSucessoSchema","testDeveFazerLoginComSucessoSchema",""
+"passed","Thu Feb 20 12:51:03 GMT 2025","Thu Feb 20 12:51:06 GMT 2025","2407","Surefire suite","Surefire test","Login.LoginTest","Login.LoginTest","testDeveFazerLoginComSucesso","testDeveFazerLoginComSucesso",""
+"passed","Thu Feb 20 12:51:06 GMT 2025","Thu Feb 20 12:51:06 GMT 2025","118","Surefire suite","Surefire test","Login.LoginTest","Login.LoginTest","testTentarFazerLoginComCredenciaisInvalidas","testTentarFazerLoginComCredenciaisInvalidas",""
