@@ -45,52 +45,15 @@ public class UsuarioDataFactory {
         return usuario;
     }
 
-    public static String cadastrarUsuarioERetornarID() {
-
-        return usuarioClient.cadastrarUsuarios(novoUsuario())
-                .path(UsuarioConstants.ID);
-    }
-
-    public static Object[] atualizarUsuario() {
-
-        return new Object[] {novoUsuario(), cadastrarUsuarioERetornarID()};
-    }
-
-    public static UsuarioRequest atualizarNomeVazio() {
+    public static UsuarioRequest usuarioComEmailExistente() {
 
         UsuarioRequest usuario = new UsuarioRequest();
-        usuario.setNome(StringUtils.EMPTY);
-        usuario.setEmail(faker.internet().emailAddress());
+        usuario.setNome(faker.name().fullName());
+        usuario.setEmail("beltrano@qa.com.br");
         usuario.setPassword(faker.internet().password());
         usuario.setAdministrador(String.valueOf(geradorBolean.nextBoolean()));
 
         return usuario;
-    }
-
-    public static Object[] atualizarUsuarioComEmailCadastrado() {
-
-        UsuarioRequest usuarioResquest = novoUsuario();
-        usuarioResquest.setEmail(retornarUsuarioExistente().getEmail());
-
-        return new Object[] {usuarioResquest, cadastrarUsuarioERetornarID()};
-    }
-
-    public static UsuarioResponse retornarUsuarioExistente() {
-
-        UsuarioResponse usuario =
-                objectMapper.convertValue(usuarioClient.listarUsuarios().path("usuarios[0]"), UsuarioResponse.class);
-
-        return usuario;
-    }
-
-    public static String retornarIDInvalido() {
-
-        return faker.idNumber().invalid();
-    }
-
-    public static String retornarIDNome() {
-
-        return faker.name().fullName();
     }
 
 }

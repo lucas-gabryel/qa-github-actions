@@ -18,6 +18,7 @@ public class CadastrarUsuariosTest {
     private final UsuarioClient usuariosClient = new UsuarioClient();
     UsuarioRequest usuarioResquest = UsuarioDataFactory.usuarioValido();
     UsuarioRequest usuario = UsuarioDataFactory.usuarioValido();
+    UsuarioRequest usuarioEmail = UsuarioDataFactory.usuarioComEmailExistente();
 
     @Test(groups = "Contract")
     @Severity(SeverityLevel.CRITICAL)
@@ -54,7 +55,7 @@ public class CadastrarUsuariosTest {
     @Description("Testa se o sistema impede o cadastro de um usuário com email já existente")
     public void testTentarCadastrarUsuarioComEmailJaCadastrado() {
 
-        usuariosClient.cadastrarUsuarios(usuario)
+        usuariosClient.cadastrarUsuarios(usuarioEmail)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
